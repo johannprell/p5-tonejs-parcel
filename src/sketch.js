@@ -15,6 +15,7 @@ export function init() {
 
 function setup() {
   sketch.createCanvas(window.innerWidth, window.innerHeight)
+  console.log('alide')
 }
 
 function draw() {
