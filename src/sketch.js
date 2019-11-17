@@ -25,20 +25,32 @@ function setup() {
 function draw() {
   if (s.mouseIsPressed) {
     if(!isActive) {
-      isActive = true
-      AUDIO.start()
+      beginDrawing()
     }
-    const x = s.mouseX
-    const y = s.mouseY
-    s.ellipse(x, y, 80, 80)
-    AUDIO.play(x, y)
+    updateDrawing()
   } else {
     if(isActive) {
-      isActive = false
-      resetCanvas()
-      AUDIO.stop()
+      reset()
     }
   }
+}
+
+function beginDrawing() {
+  isActive = true
+  AUDIO.start()
+}
+
+function updateDrawing() {
+  const x = s.mouseX
+  const y = s.mouseY
+  s.ellipse(x, y, 80, 80)
+  AUDIO.play(x, y)
+}
+
+function reset() {
+  isActive = false
+  resetCanvas()
+  AUDIO.stop()
 }
 
 function resetCanvas() {
