@@ -1,22 +1,26 @@
 import P5 from 'p5'
 
 // Sketch closure
-let s
-let sketch
+let sketch // passed to P5 instance
+let s // use this to reference sketch
 
 export function init() {
-  s = (sk) => {
+  sketch = (sk) => {
     sk.setup = setup
     sk.draw = draw
-    sketch = sk
+    s = sk
   }
-  const p5 = new P5(s)
+  const p5 = new P5(sketch)
 }
 
 function setup() {
-  sketch.createCanvas(window.innerWidth, window.innerHeight)
+  s.createCanvas(window.innerWidth, window.innerHeight)
+  s.background(220)
+  s.fill(255)
 }
 
 function draw() {
-  sketch.background(220)
+  if (s.mouseIsPressed) {
+    s.ellipse(s.mouseX, s.mouseY, 80, 80)
+  }
 }
