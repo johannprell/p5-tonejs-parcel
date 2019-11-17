@@ -1,8 +1,19 @@
 import * as TONE from 'tone'
 
-let synth
+let osc
 
 export function init() {
-  synth = new TONE.Synth().toMaster()
-  synth.triggerAttackRelease('C4', '8n')
+  osc = new TONE.OmniOscillator(440, TONE.Oscillator.Type.Sine).toMaster()
+}
+
+export function start() {
+  osc.start()
+}
+
+export function play(x, y) {
+  // TODO: use x and y to manipulate pitch and timbre
+}
+
+export function stop() {
+  osc.stop()
 }

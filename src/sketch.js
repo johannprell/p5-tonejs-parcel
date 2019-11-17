@@ -1,8 +1,11 @@
 import P5 from 'p5'
+import * as AUDIO from './audio' 
 
 // Sketch closure
 let sketch // passed to P5 instance
 let s // use this to reference sketch
+
+let isActive = false
 
 export function init() {
   sketch = (sk) => {
@@ -15,12 +18,30 @@ export function init() {
 
 function setup() {
   s.createCanvas(window.innerWidth, window.innerHeight)
-  s.background(220)
+  resetCanvas()
   s.fill(255)
 }
 
 function draw() {
   if (s.mouseIsPressed) {
-    s.ellipse(s.mouseX, s.mouseY, 80, 80)
+    if(!isActive) {
+      isActive = true
+      AUDIO.start()
+    }
+    const x = s.mouseX
+    const y = s.mouseY
+    s.ellipse(x, y, 80, 80)
+    AUDIO.play(x, y)
+  } else {
+    if(isActive) {
+      isActive = false
+      resetCanvas()
+      AUDIO.stop()
+    }
   }
+}
+
+function resetCanvas() {
+  s.clear()
+  s.background(220)
 }
