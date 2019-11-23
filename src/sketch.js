@@ -1,11 +1,12 @@
 import P5 from 'p5'
-import * as AUDIO from './audio' 
+import * as TONE from 'tone'
 
 // Sketch closure
 let sketch // passed to P5 instance
 let s // use this to reference sketch
 
-let isActive = false
+// Tone oscillator
+let osc
 
 export function init() {
   sketch = (sk) => {
@@ -14,46 +15,28 @@ export function init() {
     s = sk
   }
   const p5 = new P5(sketch)
+
+  osc = new TONE.OmniOscillator(440, TONE.Oscillator.Type.Sine).toMaster()
+  osc.volume.value = -10 // roll of some volume
 }
 
 function setup() {
   s.createCanvas(window.innerWidth, window.innerHeight)
-  resetCanvas()
-  s.fill(255)
+  s.clear()
+  s.fill(80)
+  s.noStroke()
 }
 
 function draw() {
   if (s.mouseIsPressed) {
-    if(!isActive) {
-      beginDrawing()
+    if(osc.state === 'stopped') {
+      osc.start()
     }
-    updateDrawing()
+    s.circle(s.mouseX, s.mouseY, 28)
   } else {
-    if(isActive) {
-      reset()
+    if(osc.state === 'started') {
+      osc.stop()
+      s.clear()
     }
   }
-}
-
-function beginDrawing() {
-  isActive = true
-  AUDIO.start()
-}
-
-function updateDrawing() {
-  const x = s.mouseX
-  const y = s.mouseY
-  s.ellipse(x, y, 80, 80)
-  AUDIO.play(x, y)
-}
-
-function reset() {
-  isActive = false
-  resetCanvas()
-  AUDIO.stop()
-}
-
-function resetCanvas() {
-  s.clear()
-  s.background(220)
 }
